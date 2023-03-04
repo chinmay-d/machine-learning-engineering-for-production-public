@@ -5,18 +5,18 @@ from fastapi import FastAPI
 from pydantic import BaseModel, conlist
 
 
-
+# Create a fastapi app
 app = FastAPI(title="Predicting Wine Class with batching")
 
 # Open classifier in global scope
 with open("models/wine.pkl", "rb") as file:
     clf = pickle.load(file)
 
-
+# Class Wine batch
 class Wine(BaseModel):
     batches: List[conlist(item_type=float, min_items=13, max_items=13)]
 
-
+# predict function
 @app.post("/predict")
 def predict(wine: Wine):
     batches = wine.batches
